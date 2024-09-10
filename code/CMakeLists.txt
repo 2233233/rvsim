@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.23)
+project(RVVM C)
+
+set(CMAKE_C_STANDARD 99)
+set(INC_DIR ./include)
+set(LINK_DIR ./lib)
+include_directories(${INC_DIR})
+link_directories(${LINK_DIR})
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
+add_executable(RVVM src/main.c src/init_instr.c src/declare.c src/instr.c src/bitmap.c src/header/riscv.h src/header/bitmap.h src/header/instr.h src/header/trap.h src/header/plic.h src/plic.c src/host.c src/clint.c src/trap.c src/debug.c src/header/debug.h src/avltree.c src/header/avltree.h)

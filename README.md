@@ -4,9 +4,9 @@
 
 ## 简介
 
-一个小型的RISC-V行为级模拟器、仅支持RV32IMF指令集，留下了RV32A指令集的接口和部分实现。最初的设想是可以运行[RVOS](https://github.com/plctlab/riscv-operating-system-mooc)的模拟器，已经通过了全部12个课程开发的实例的测试
+一个小型的RISC-V行为级模拟器、仅支持RV32IMF指令集，留下了RV32A指令集的接口和部分实现。最初的设想是可以运行[RVOS](https://github.com/plctlab/riscv-operating-system-mooc)的模拟器，已经通过了全部12个课程开发的实例的测试，关于RVOS课程，可以看[这里](https://www.bilibili.com/video/BV1Q5411w7z5/)。
 
-### 项目结构
+## 项目结构
 
 ```
 rvsim
@@ -46,3 +46,12 @@ rvsim
             trap.h
 ```
 
+## 使用
+
+`rvvm [-d] <image-file...>`
+
+如果你正在学习RVOS课程，此处加载的镜像文件是编译后产生的/out目录下的os.bin文件。你可以选择在课程推荐环境（Ubuntu）下进行编译，也可以使用[芯来工具链](https://www.nucleisys.com/download.php)搭配make在windows环境下进行编译
+
+## literate program
+
+见[build your own risc-v emulator]([rvvm (2233233.github.io)](https://2233233.github.io/rvvm/))
