@@ -433,8 +433,8 @@ void MRET(instr_func_args* args){
     reg[rg_pc] = csr[csr_mepc];
     reg[rg_pc] -= 4;
     //恢复mstatus.MIE
-    csr[csr_mstatus] |= (csr[csr_mstatus] & 0x80) >> 4;
-    csr[csr_mstatus] |= 0x80;
+    csr[csr_mstatus] |= (csr[csr_mstatus] & 0xF0) >> 4;
+    csr[csr_mstatus] |= 0xF0;
     //恢复特权级
     current_pl = (csr[csr_mstatus] & 0x1800) >> 11;
     //恢复mcause
@@ -491,6 +491,8 @@ void EBREAK(instr_func_args* args){
 void ECALL(instr_func_args* args){
     //a7为系统调用编号
     SET_MCAUSE_ECLL(current_pl)
+    csr[csr_mstatus] &= 0xFFFFE0FF;
+    csr[csr_mstatus] |= (current_pl << 11);
     current_pl = M_MODE;
 }
 void FENCE(instr_func_args* args){}

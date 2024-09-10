@@ -136,7 +136,7 @@ void (*instr_match(uint32_t instr, instr_func_args* func_args))(instr_func_args*
 
 void init_csr(){
 //    csr[csr_mhartid] = 0;
-//    csr[csr_mstatus] = 0;
+    csr[csr_mstatus] = 0xF;
 //    csr[csr_sstatus] = 0;
 //    csr[csr_mie] = 0;
 //    csr[csr_mtvec] = 0;
