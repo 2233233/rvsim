@@ -34,7 +34,7 @@ rvsim
     │  instr.c			指令执行函数
     │  main.c			hart的主要工作函数
     │  plic.c			plic工作函数，负责硬件中断的仲裁
-    │  trap.c			trapshi'bie
+    │  trap.c			trap识别函数
     │  
     └─header
             avltree.h
