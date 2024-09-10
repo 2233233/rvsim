@@ -260,14 +260,15 @@ int main(int argc, const char* argv[])
             exit(1);
         }
     }
-    signal(SIGINT, handle_interrupt);
-    disable_input_buffering();
-    setbuf(stdout, 0);
+
     init_instr_map();
     init_csr();
     //创建键盘线程，负责接收键盘输入并发送到uart0寄存器映射的内存
     if(!is_debug_mode){
         pthread_create(&keyboard_thread, NULL, (void * (*)(void *))keyboard_thread_run, NULL);
+        signal(SIGINT, handle_interrupt);
+        disable_input_buffering();
+        setbuf(stdout, 0);
     }
     /* set the PC to starting position */
     /* 0x3000 is the default */
