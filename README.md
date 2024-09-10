@@ -52,6 +52,15 @@ rvsim
 
 如果你正在学习RVOS课程，此处加载的镜像文件是编译后产生的/out目录下的os.bin文件。你可以选择在课程推荐环境（Ubuntu）下进行编译，也可以使用[芯来工具链](https://www.nucleisys.com/download.php)搭配make在windows环境下进行编译
 
+debug部分：
+
+- `b|breakpoint address`：设置断点，address是16进制的内存地址
+- `run`：执行
+- `reg [csr|plic|clint]`：默认打印通用寄存器，添加参数表示打印对应寄存器
+- `mem address`：打印内存，address是16进制的内存地址
+- `setp`：单步执行
+
 ## literate program
 
 见[build your own risc-v emulator]([rvvm (2233233.github.io)](https://2233233.github.io/rvvm/))
+
