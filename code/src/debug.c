@@ -143,6 +143,7 @@ void console(){
         bool next_target = true;
         for (int i = 0; cmd_input[i] != '\0'; ++i) {
             if(cmd_input[i] == ' ') {
+                cmd_input[i] = '\0';
                 next_target = true;
                 continue;
             }else if(next_target) {
@@ -163,6 +164,7 @@ void console(){
                 continue;
             }
             Insert(bpTree, addr);
+            printf("breakpoint:%X\n", addr);
         }else if(*op == 'r'){
             if(strcmp(op, "run") == 0){
                 instr_run_state = AUTO_STATE;
@@ -329,7 +331,7 @@ void print_mem(uint32_t mem_addr){
         for (int j = 0; j < 16; j++) {
             printf("%02X\t", dram[mem_addr + i * 16 + j]);
         }
-        printf("\r\n");
+        printf("\n");
     }
 }
 
@@ -353,14 +355,14 @@ void print_xreg(){
 
 
 void print_csr(){
-    printf("mhartid=%X\r\n", csr[csr_mhartid]);
-    printf("mstatus=%X\r\n", csr[csr_mstatus]);
-    printf("mie=%X\r\n", csr[csr_mie]);
-    printf("mtvec=%X\r\n", csr[csr_mtvec]);
-    printf("mepc=%X\r\n", csr[csr_mepc]);
-    printf("mcause=%X\r\n", csr[csr_mcause]);
-    printf("mtval=%X\r\n", csr[csr_mtval]);
-    printf("mip=%X\r\n", csr[csr_mip]);
+    printf("mhartid=%X\n", csr[csr_mhartid]);
+    printf("mstatus=%X\n", csr[csr_mstatus]);
+    printf("mie=%X\n", csr[csr_mie]);
+    printf("mtvec=%X\n", csr[csr_mtvec]);
+    printf("mepc=%X\n", csr[csr_mepc]);
+    printf("mcause=%X\n", csr[csr_mcause]);
+    printf("mtval=%X\n", csr[csr_mtval]);
+    printf("mip=%X\n", csr[csr_mip]);
 }
 
 void printf_bin(uint64_t num)
@@ -387,19 +389,19 @@ void print_plic_reg(){
     for (int i = 0; i < 54; ++i) {
         printf("%d, ", ((uint32_t*)plic_reg)[i]);
     }
-    printf("pending=");
+    printf("\npending=");
     printf_bin(*((uint64_t*)plic_reg + 27));
-    printf("\r\nenable=");
+    printf("\nenable=");
     printf_bin(*((uint64_t*)plic_reg + 28));
-    printf("\r\nthreshold=%d\r\n", *((uint32_t*)plic_reg + plic_threshold));
-    printf("claim/complete=%d", *((uint32_t*)plic_reg + plic_claim_complete));
+    printf("\nthreshold=%d", *((uint32_t*)plic_reg + plic_threshold));
+    printf("\nclaim/complete=%d\n", *((uint32_t*)plic_reg + plic_claim_complete));
     
 }
 
 #define MTIME ((uint64_t*)(clint_reg + clint_mtime1))
 #define MTIMECMP ((uint64_t*)(clint_reg + clint_mtimecmp1))
 void print_clint_reg(){
-    printf("MSIP=%d\r\n", clint_reg[clint_MSIP] & 0x1);
-    printf("mtime=%llX\r\n", *MTIME);
-    printf("mtimecmp=%llX\r\n", *MTIMECMP);
+    printf("MSIP=%d\n", clint_reg[clint_MSIP] & 0x1);
+    printf("mtime=%llX\n", *MTIME);
+    printf("mtimecmp=%llX\n", *MTIMECMP);
 }

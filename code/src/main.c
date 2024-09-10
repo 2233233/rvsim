@@ -168,6 +168,9 @@ void init_resource(){
     group_index = (uint8_t*)malloc(sizeof(uint8_t) * GROUP_INSTR_COUNT);
     group_mask_argsfunc = (mask_argsfunc*)malloc(sizeof(mask_argsfunc) * GROUP_INSTR_COUNT);
 
+    if(is_debug_mode){
+        bpTree = create(0);
+    }
 #ifdef AMO_SUPPORT
     reservation_map = bit_new(DRAM_SIZE / 4);
     amo_mutex_list = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) * AMO_MEMORY_MUTEX_COUNT);
@@ -201,7 +204,9 @@ void free_resource(){
     free(amo_mutex_list);
     free(mutex_flag_list);
 #endif
-    pthread_join(keyboard_thread, NULL);
+    if(!is_debug_mode){
+        pthread_join(keyboard_thread, NULL);
+    }
 
 }
 
@@ -261,9 +266,9 @@ int main(int argc, const char* argv[])
     init_instr_map();
     init_csr();
     //创建键盘线程，负责接收键盘输入并发送到uart0寄存器映射的内存
-    pthread_create(&keyboard_thread, NULL, keyboard_thread_run, NULL);
-
-
+    if(!is_debug_mode){
+        pthread_create(&keyboard_thread, NULL, (void * (*)(void *))keyboard_thread_run, NULL);
+    }
     /* set the PC to starting position */
     /* 0x3000 is the default */
     enum { PC_START = 0x0 };
@@ -280,7 +285,18 @@ int main(int argc, const char* argv[])
         uint32_t instr = GET_INSTR(reg[rg_pc]);
 
         if(is_debug_mode) {
-            DEBUG_PROCESS_CODE()
+            if(instr_run_state) {
+                //run
+                if(search(bpTree, reg[rg_pc])){
+                    //有断点
+                    instr_run_state = STEP_STATE;
+                    printf("break at:%X\n", reg[rg_pc]);
+                    console();
+                }
+            }else{
+                //step
+                console();
+            }
         }
 
         void (*pFunc)(instr_func_args*) = instr_match(instr, iargs);
